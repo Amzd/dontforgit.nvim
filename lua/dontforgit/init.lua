@@ -30,7 +30,7 @@ M.setup = function (opts)
             while input ~= nil do
                 pcall(vim.cmd, input)
 
-                -- if not has_pending_changes() then break end
+                if not has_pending_changes() then break end
 
                 vim.ui.input({ prompt = ":" }, function (new_input)
                     if new_input == "" then
