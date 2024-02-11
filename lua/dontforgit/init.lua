@@ -1,9 +1,15 @@
 local M = {}
 
 M.default_config = {
+    -- If you often work in projects without git then turn this off to stop this plugin pestering you
     notify_git_failed = true,
     git_command = "git",
-    compact = true,
+    -- If you always do `:!git <something>` then you can set this to "!git " to save typing
+    prompt_prefix = "",
+    -- Wether to add `-s` to `git status` command
+    compact = false,
+    -- Disable the hint with
+    disable_hint = false,
 }
 
 M.setup = function (opts)
@@ -25,6 +31,10 @@ M.setup = function (opts)
         callback = function ()
             if not has_pending_changes() then return end
 
+            if not config.disable_hint then
+                print("Press <Esc>/:q/<C-c> or commit everything to exit | <Enter> without changing command to show git status again")
+            end
+
             local git_status = "!" .. config.git_command .. " status" .. (config.compact and " -s" or "")
             local input = git_status
             while input ~= nil do
@@ -35,9 +45,12 @@ M.setup = function (opts)
                     return
                 end
 
-                vim.ui.input({ prompt = ":" }, function (new_input)
+                vim.ui.input({ prompt = ":", default = config.prompt_prefix }, function (new_input)
                     if new_input == "" then
                         -- I don't like how it prints as "::!<command>" but it's better than ":\n:!<command>"
+                        input = git_status
+                    elseif new_input == config.prompt_prefix then
+                        print("\n")
                         input = git_status
                     else
                         print("\n")
