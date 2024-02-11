@@ -4,6 +4,10 @@ Don't forget to commit and push your changes anymore!
 
 If you are like me and often quit NeoVim without committing or pushing, this plugin will remind you to do so.
 
+
+https://github.com/Amzd/dontforgit.nvim/assets/17001151/4452a19b-59dd-4a1b-825f-d3d53de54444
+
+
 ## Installation
 
 
