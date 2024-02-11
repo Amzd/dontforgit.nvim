@@ -16,7 +16,7 @@ M.setup = function (opts)
     local config = vim.tbl_extend("force", M.default_config, opts or {})
 
     local function has_pending_changes()
-        local ok, ret = pcall(vim.fn.systemlist, { config.git_command, "status", "-s" })
+        local ok, ret = pcall(vim.fn.systemlist, { config.git_command, "status", "-s", "-b" })
         ok = ok and vim.v.shell_error == 0
         if not ok and config.notify_git_failed then
             vim.ui.input({ prompt = "Failed to get git status" }, function() end)
@@ -35,7 +35,7 @@ M.setup = function (opts)
                 print("Press <Esc>/:q/<C-c> or commit everything to exit | <Enter> without changing command to show git status again")
             end
 
-            local git_status = "!" .. config.git_command .. " status" .. (config.compact and " -s" or "")
+            local git_status = "!" .. config.git_command .. " status" .. (config.compact and " -s -b" or "")
             local input = git_status
             while input ~= nil do
                 pcall(vim.cmd, input)
