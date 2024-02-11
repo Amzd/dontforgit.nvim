@@ -5,7 +5,8 @@ M.default_config = {
     notify_git_failed = true,
     git_command = "git",
     -- If you always do `:!git <something>` then you can set this to "!git " to save typing
-    prompt_prefix = "",
+    -- or if you want to use fugitive you might want to set this to ""
+    prompt_prefix = "!",
     -- Wether to add `-s` to `git status` command
     compact = false,
     -- Disable the hint with
