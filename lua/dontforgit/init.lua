@@ -9,7 +9,7 @@ M.default_config = {
     prompt_prefix = "!",
     -- Wether to add `-s` to `git status` command
     compact = false,
-    -- Disable the hint with
+    -- Disable the hint
     disable_hint = false,
 }
 
