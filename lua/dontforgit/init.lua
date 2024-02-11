@@ -16,11 +16,17 @@ M.setup = function (opts)
     local config = vim.tbl_extend("force", M.default_config, opts or {})
 
     local function has_pending_changes()
-        local ok, ret = pcall(vim.fn.systemlist, { config.git_command, "status", "-s" })
+        local ok, ret = pcall(vim.fn.systemlist, { config.git_command, "status", "-s", "-b" })
         ok = ok and vim.v.shell_error == 0
         if not ok and config.notify_git_failed then
             vim.ui.input({ prompt = "Failed to get git status" }, function() end)
         end
+
+        -- filter out "## <branch>...<remote>" that are missing "[<ahead/behind>]"
+        -- so our result does not contain the print of current branch by git status
+        ret = vim.tbl_filter(function (v)
+            return not v:find("## .*%.%.%.") or v:find("%[.*%]")
+        end, ret)
 
         return ok and #ret > 0
     end
