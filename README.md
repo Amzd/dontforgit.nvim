@@ -46,3 +46,7 @@ When you have committed and pushed everything it automatically quits.
 You can use <Esc>/<C-c>, or :q to close without committing everything.
 
 You can <Enter> without any input (either empty string or same as config.prompt_prefix) to run git status again.
+
+## How it works
+
+This plugin hooks the `VimLeavePre` event and blocks nvim shutting down by using `vim.ui.input` in a loop.
