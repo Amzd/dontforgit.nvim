@@ -19,7 +19,7 @@ M.setup = function (opts)
         local ok, ret = pcall(vim.fn.systemlist, { config.git_command, "status", "-s" })
         ok = ok and vim.v.shell_error == 0
         if not ok and config.notify_git_failed then
-            vim.ui.input({ prompt = "failed to get git status" }, function() end)
+            vim.ui.input({ prompt = "Failed to get git status" }, function() end)
         end
 
         return ok and #ret > 0
