@@ -15,19 +15,21 @@ M.default_config = {
 
 M.setup = function (opts)
     local config = vim.tbl_extend("force", M.default_config, opts or {})
-    local parsed_cmd = vim.api.nvim_parse_cmd("!" .. config.git_command .. " status", {})
+    local parsed_cmd = vim.api.nvim_parse_cmd("!" .. config.git_command .. " status -s -b", {})
 
     local function has_pending_changes()
         local ok, pending = pcall(vim.api.nvim_cmd, parsed_cmd, { output = true })
-        pending = vim.split(pending or "", "\n", true)
         ok = ok and vim.v.shell_error == 0
         if not ok and config.notify_git_failed then
             vim.ui.input({ prompt = "Failed to get git status [<Esc>, <C-c> or <Enter> to close]" }, function() end)
         end
 
-        -- filter out "## <branch>...<remote>" that are missing "[<ahead/behind>]"
-        -- so our result does not contain the print of current branch by git status
+        pending = vim.split(pending or "", "\n")
         pending = vim.tbl_filter(function (v)
+            if v == "" then return false end
+            -- filter out command
+            if v:find(":!.*\r") then return false end
+            -- filter out "## <branch>...<remote>" when missing "[<ahead/behind>]"
             return not v:find("## .*%.%.%.") or v:find("%[.*%]")
         end, pending)
 
