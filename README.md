@@ -26,9 +26,9 @@ require("dontforgit").setup {
     -- If you often work in projects without git then turn this off to stop this plugin pestering you
     notify_git_failed = true,
     -- If you want to use a different git command (eg for dotfiles when in home directory) you can do so here
-    git_command = "git",
+    git_command = "!git",
     -- If you always do `:!git <something>` then you can set this to "!git " to save typing
-    -- or if you want to use fugitive you might want to set this to ""
+    -- or if you want to use fugitive you might want to set this to "Git " or ""
     prompt_prefix = "!",
     -- Wether to add `-s` to `git status` command
     compact = false,

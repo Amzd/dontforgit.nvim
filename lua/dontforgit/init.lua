@@ -3,9 +3,9 @@ local M = {}
 M.default_config = {
     -- If you often work in projects without git then turn this off to stop this plugin pestering you
     notify_git_failed = true,
-    git_command = "git",
+    git_command = "!git",
     -- If you always do `:!git <something>` then you can set this to "!git " to save typing
-    -- or if you want to use fugitive you might want to set this to ""
+    -- or if you want to use fugitive you might want to set this to "Git " or ""
     prompt_prefix = "!",
     -- Wether to add `-s` to `git status` command
     compact = false,
@@ -15,7 +15,7 @@ M.default_config = {
 
 M.setup = function (opts)
     local config = vim.tbl_extend("force", M.default_config, opts or {})
-    local parsed_cmd = vim.api.nvim_parse_cmd("!" .. config.git_command .. " status -s -b", {})
+    local parsed_cmd = vim.api.nvim_parse_cmd(config.git_command .. " status -s -b", {})
 
     local function has_pending_changes()
         local ok, pending = pcall(vim.api.nvim_cmd, parsed_cmd, { output = true })
@@ -46,7 +46,7 @@ M.setup = function (opts)
                 print("Press <Esc>/:q/<C-c> or commit everything to exit | <Enter> without changing command to show git status again")
             end
 
-            local git_status = "!" .. config.git_command .. " status" .. (config.compact and " -s" or "")
+            local git_status = config.git_command .. " status" .. (config.compact and " -s" or "")
             local input = git_status
             while input ~= nil do
                 pcall(vim.cmd, input)
@@ -56,7 +56,7 @@ M.setup = function (opts)
                     return
                 end
 
-                vim.ui.input({ prompt = ":", default = config.prompt_prefix }, function (new_input)
+                vim.ui.input({ prompt = ":", default = config.prompt_prefix , completion = "command" }, function (new_input)
                     if new_input == "" then
                         -- I don't like how it prints as "::!<command>" but it's better than ":\n:!<command>"
                         input = git_status
