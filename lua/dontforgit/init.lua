@@ -29,8 +29,8 @@ M.setup = function (opts)
             if v == "" then return false end
             -- filter out command
             if v:find(":!.*\r") then return false end
-            -- filter out "## <branch>...<remote>" when missing "[<ahead/behind>]"
-            return not v:find("## .*%.%.%.") or v:find("%[.*%]")
+            -- filter out "## <branch>...<remote>" and "## <branch>" when missing "[<ahead/behind>]"
+            return not v:find("## .*") or v:find("%[.*%]")
         end, pending)
 
         return ok and #pending > 0
