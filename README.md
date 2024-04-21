@@ -43,9 +43,9 @@ Quit NeoVim without committing or pushing and you will be prompted to do so.
 
 When you have committed and pushed everything it automatically quits.
 
-You can use <Esc>/<C-c>, or :q to close without committing everything.
+You can force close using `<Esc>`, `<C-c>`, or `:q` without committing everything.
 
-You can <Enter> without any input (either empty string or same as config.prompt_prefix) to run git status again.
+To run git status again you can just `<Enter>` without any input (either empty string or same as config.prompt_prefix).
 
 ## How it works
 
