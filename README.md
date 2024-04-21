@@ -30,7 +30,7 @@ require("dontforgit").setup {
     -- If you always do `:!git <something>` then you can set this to "!git " to save typing
     -- or if you want to use fugitive you might want to set this to "Git " or ""
     prompt_prefix = "!",
-    -- Wether to add `-s` to `git status` command
+    -- Wether to add `-s -b` to `git status` command
     compact = false,
     -- Disable the hint
     disable_hint = false

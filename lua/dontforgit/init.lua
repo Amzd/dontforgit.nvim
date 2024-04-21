@@ -7,7 +7,7 @@ M.default_config = {
     -- If you always do `:!git <something>` then you can set this to "!git " to save typing
     -- or if you want to use fugitive you might want to set this to "Git " or ""
     prompt_prefix = "!",
-    -- Wether to add `-s` to `git status` command
+    -- Wether to add `-s -b` to `git status` command
     compact = false,
     -- Disable the hint
     disable_hint = false,
@@ -15,7 +15,8 @@ M.default_config = {
 
 M.setup = function (opts)
     local config = vim.tbl_extend("force", M.default_config, opts or {})
-    local parsed_cmd = vim.api.nvim_parse_cmd(config.git_command .. " status -s -b", {})
+    -- -b is needed for when there is committed changes ready for push
+    local parsed_cmd = vim.api.nvim_parse_cmd(config.git_command .. " status --porcelain -b", {})
 
     local function has_pending_changes()
         local ok, pending = pcall(vim.api.nvim_cmd, parsed_cmd, { output = true })
@@ -46,7 +47,7 @@ M.setup = function (opts)
                 print("Press <Esc>/:q/<C-c> or commit everything to exit | <Enter> without changing command to show git status again")
             end
 
-            local git_status = config.git_command .. " status" .. (config.compact and " -s" or "")
+            local git_status = config.git_command .. " status" .. (config.compact and " -s -b" or "")
             local input = git_status
             while input ~= nil do
                 pcall(vim.cmd, input)
